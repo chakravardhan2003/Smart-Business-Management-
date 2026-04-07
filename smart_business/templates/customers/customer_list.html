@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Customer List</h2>
+
+<table border="1">
+
+<tr>
+<th>Name</th>
+<th>Email</th>
+<th>Phone</th>
+<th>Action</th>
+</tr>
+
+{% for customer in customers %}
+
+<tr>
+<td>{{ customer.name }}</td>
+<td>{{ customer.email }}</td>
+<td>{{ customer.phone }}</td>
+
+<td>
+<a href="/customers/delete/{{ customer.id }}/">Delete</a>
+</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+{% endblock %}

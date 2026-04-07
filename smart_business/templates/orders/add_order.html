@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Create Order</h2>
+
+<form method="POST">
+
+{% csrf_token %}
+
+<label>Customer</label><br>
+
+<select name="customer">
+
+{% for customer in customers %}
+
+<option value="{{ customer.id }}">{{ customer.name }}</option>
+
+{% endfor %}
+
+</select>
+
+<br><br>
+
+<label>Product</label><br>
+
+<select name="product">
+
+{% for product in products %}
+
+<option value="{{ product.id }}">{{ product.name }}</option>
+
+{% endfor %}
+
+</select>
+
+<br><br>
+
+<label>Quantity</label><br>
+
+<input type="number" name="quantity">
+
+<br><br>
+
+<button type="submit">Create Order</button>
+
+</form>
+
+{% endblock %}

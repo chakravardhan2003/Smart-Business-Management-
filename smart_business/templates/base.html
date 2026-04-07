@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+
+        .navbar{
+        background:#343a40;
+        padding:15px;
+        }
+
+        .navbar a{
+        color:white;
+        margin-right:20px;
+        text-decoration:none;
+        font-weight:bold;
+        }
+
+        .navbar a:hover{
+        color:#ffc107;
+        }
+
+    </style>
+
+<title>Smart Business Management</title>
+</head>
+
+<body>
+
+<h1>Smart Business Management</h1>
+
+<hr>
+
+<div class="navbar">
+
+<a href="/dashboard/">Dashboard</a>
+<a href="/products/">Products</a>
+<a href="/products/add/">Add Product</a>
+<a href="/customers/">Customers</a>
+<a href="/customers/add/">Add Customer</a>
+<a href="/auth/login/">Logout</a>
+<a href="/orders/">Orders</a>
+<a href="/orders/add/">Add Order</a>
+
+</div>
+
+<div class="container">
+
+{% block content %}
+
+{% endblock %}
+
+</div>
+
+</body>
+</html>
