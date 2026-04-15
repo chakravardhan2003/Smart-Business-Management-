@@ -2,30 +2,33 @@
 
 {% block content %}
 
-<h2>Orders</h2>
+<h2>Orders List</h2>
 
-<table border="1">
+<a href="/orders/add/"><button>Add Order</button></a>
+
+<br><br>
+
+<table border="1" cellpadding="10">
 
 <tr>
-<th>Customer</th>
-<th>Product</th>
-<th>Quantity</th>
-<th>Total Price</th>
-<th>Action</th>
+    <th>Customer</th>
+    <th>Product</th>
+    <th>Quantity</th>
+    <th>Total Price</th>
+    <th>Action</th>
 </tr>
 
 {% for order in orders %}
 
 <tr>
-<td>{{ order.customer }}</td>
-<td>{{ order.product }}</td>
-<td>{{ order.quantity }}</td>
-<td>{{ order.total_price }}</td>
+    <td>{{ order.customer.name }}</td>
+    <td>{{ order.product.name }}</td>
+    <td>{{ order.quantity }}</td>
+    <td>{{ order.total_price }}</td>
 
-<td>
-<a href="/orders/delete/{{ order.id }}/">Delete</a>
-</td>
-
+    <td>
+        <a href="/orders/delete/{{ order.id }}/">Delete</a>
+    </td>
 </tr>
 
 {% endfor %}

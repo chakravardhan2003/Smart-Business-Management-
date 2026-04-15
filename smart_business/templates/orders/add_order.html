@@ -2,48 +2,111 @@
 
 {% block content %}
 
-<h2>Create Order</h2>
+<style>
+
+.container{
+    width: 500px;
+    margin: 50px auto;
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.1);
+}
+
+h2{
+    text-align:center;
+    margin-bottom:20px;
+}
+
+label{
+    font-weight:bold;
+}
+
+select,input{
+    width:100%;
+    padding:10px;
+    margin-top:5px;
+    border:1px solid #ccc;
+    border-radius:6px;
+}
+
+button{
+    width:100%;
+    padding:12px;
+    background:#4CAF50;
+    color:white;
+    border:none;
+    border-radius:6px;
+    font-size:16px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#45a049;
+}
+
+.back-btn{
+    display:block;
+    text-align:center;
+    margin-top:15px;
+    text-decoration:none;
+    color:#555;
+}
+
+.back-btn:hover{
+    color:black;
+}
+
+</style>
+
+
+<div class="container">
+
+<h2>Add Order </h2>
 
 <form method="POST">
 
 {% csrf_token %}
 
-<label>Customer</label><br>
+<label>Customer</label>
+<select name="customer" required>
 
-<select name="customer">
+<option value="">Select Customer</option>
 
 {% for customer in customers %}
-
 <option value="{{ customer.id }}">{{ customer.name }}</option>
-
 {% endfor %}
 
 </select>
 
 <br><br>
 
-<label>Product</label><br>
+<label>Product</label>
 
-<select name="product">
+<select name="product" required>
+
+<option value="">Select Product</option>
 
 {% for product in products %}
-
 <option value="{{ product.id }}">{{ product.name }}</option>
-
 {% endfor %}
 
 </select>
 
 <br><br>
 
-<label>Quantity</label><br>
+<label>Quantity</label>
 
-<input type="number" name="quantity">
+<input type="number" name="quantity" min="1" required>
 
 <br><br>
 
-<button type="submit">Create Order</button>
+<button type="submit">Save Order</button>
 
 </form>
+
+<a href="{% url 'order_list' %}" class="back-btn">⬅ Back to Orders</a>
+
+</div>
 
 {% endblock %}

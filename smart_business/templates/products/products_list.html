@@ -2,26 +2,40 @@
 
 {% block content %}
 
-<h2>Product List</h2>
+<h2>Products</h2>
 
-<table border="1">
+<a href="/products/add/">
+<button>Add Product</button>
+</a>
+
+<br><br>
+
+<table>
 
 <tr>
+<th>ID</th>
 <th>Name</th>
 <th>Price</th>
 <th>Quantity</th>
-<th>Action</th>
+<th>Actions</th>
 </tr>
 
 {% for product in products %}
 
 <tr>
+<td>{{ product.id }}</td>
 <td>{{ product.name }}</td>
 <td>{{ product.price }}</td>
 <td>{{ product.quantity }}</td>
 
 <td>
-<a href="/products/delete/{{ product.id }}/">Delete</a>
+<a href="/products/edit/{{product.id}}">
+<button>Edit</button>
+</a>
+
+<a href="/products/delete/{{product.id}}">
+<button>Delete</button>
+</a>
 </td>
 
 </tr>
@@ -29,5 +43,15 @@
 {% endfor %}
 
 </table>
+
+<form method="GET">
+
+<input type="text" name="search" placeholder="Search Product">
+
+<button type="submit">Search</button>
+
+</form>
+
+<br>
 
 {% endblock %}
