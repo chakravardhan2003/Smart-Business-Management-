@@ -2,23 +2,49 @@
 
 {% block content %}
 
-<h2>Add Customer</h2>
+<div style="max-width:500px; margin:auto;">
 
-<form method="POST">
+    <div class="card">
 
-{% csrf_token %}
+        <h2 style="margin-bottom:20px; text-align:center;">➕ Add Customer</h2>
 
-<label>Name</label><br>
-<input type="text" name="name"><br><br>
+        <form method="POST">
 
-<label>Email</label><br>
-<input type="email" name="email"><br><br>
+            {% csrf_token %}
 
-<label>Phone</label><br>
-<input type="text" name="phone"><br><br>
+            <!-- NAME -->
+            <label style="font-weight:bold;">Customer Name</label><br>
+            <input type="text" name="name" placeholder="Enter customer name" required
+                   style="width:100%; padding:10px; margin-top:5px; margin-bottom:15px;
+                   border-radius:6px; border:1px solid #ccc;">
 
-<button type="submit">Add Customer</button>
+            <!-- EMAIL -->
+            <label style="font-weight:bold;">Email</label><br>
+            <input type="email" name="email" placeholder="Enter email address" required
+                   style="width:100%; padding:10px; margin-top:5px; margin-bottom:15px;
+                   border-radius:6px; border:1px solid #ccc;">
 
-</form>
+            <!-- PHONE -->
+            <label style="font-weight:bold;">Phone</label><br>
+            <input type="text" name="phone" placeholder="Enter phone number" required
+                   style="width:100%; padding:10px; margin-top:5px; margin-bottom:20px;
+                   border-radius:6px; border:1px solid #ccc;">
+
+            <!-- BUTTONS -->
+            <div style="display:flex; justify-content:space-between;">
+
+                <a href="/customers/">
+                    <button type="button" style="background:#95a5a6;">Cancel</button>
+                </a>
+
+                <button type="submit" style="background:#2ecc71;">Add Customer</button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
 
 {% endblock %}

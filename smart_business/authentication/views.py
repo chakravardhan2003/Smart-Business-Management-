@@ -1,10 +1,16 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
+from django.contrib import messages
+from django.contrib.auth.models import User
+
 
 def login_view(request):
 
-    if request.method == "POST":
+    # ✅ If already logged in
+    if request.user.is_authenticated:
+        return redirect('dashboard')
 
+    if request.method == "POST":
         username = request.POST.get('username')
         password = request.POST.get('password')
 
@@ -12,12 +18,12 @@ def login_view(request):
 
         if user is not None:
             login(request, user)
-            return redirect('/dashboard/')
-
+            return redirect('dashboard')
         else:
-            return render(request, 'login.html', {'error': 'Invalid credentials'})
+            messages.error(request, "Invalid username or password")
 
-    return render(request, 'login.html')
+    return render(request, 'authentication/login.html')
+
 
 def register_view(request):
     if request.method == "POST":
@@ -31,11 +37,11 @@ def register_view(request):
                 return render(request, 'register.html', {'error': 'Username already exists'})
             else:
                 User.objects.create_user(username=username, email=email, password=password1)
-                return redirect('/')
+                return redirect('authentication/login/')
         else:
-            return render(request, 'register.html', {'error': 'Passwords do not match'})
+            return render(request, 'authentication/register.html', {'error': 'Passwords do not match'})
 
-    return render(request, 'register.html')
+    return render(request, 'authentication/register.html')
 
 
 # DASHBOARD

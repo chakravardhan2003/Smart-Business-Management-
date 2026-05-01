@@ -2,23 +2,89 @@
 
 {% block content %}
 
-<h2>Add Product</h2>
+<div style="max-width:500px; margin:auto;">
 
-<form method="POST">
+    <div class="card">
 
-{% csrf_token %}
+        <h2 style="margin-bottom:20px; text-align:center;">
+            {% if form.instance.pk %}
+                ✏️ Edit Product
+            {% else %}
+                ➕ Add Product
+            {% endif %}
+        </h2>
 
-<label>Name</label><br>
-<input type="text" name="name"><br><br>
+        <form method="POST">
+            {% csrf_token %}
 
-<label>Price</label><br>
-<input type="number" name="price"><br><br>
+            <!-- NAME -->
+            <label style="font-weight:bold;">Product Name</label><br>
+            <input type="text" name="name"
+                   value="{{ form.instance.name|default:'' }}"
+                   placeholder="Enter product name"
+                   style="width:100%; padding:10px; margin-top:5px; margin-bottom:15px;
+                   border-radius:6px; border:1px solid #ccc;">
 
-<label>Quantity</label><br>
-<input type="number" name="quantity"><br><br>
+            <!-- PRICE -->
+            <label style="font-weight:bold;">Price</label><br>
+            <input type="number" name="price"
+                   value="{{ form.instance.price|default:'' }}"
+                   placeholder="Enter price"
+                   style="width:100%; padding:10px; margin-top:5px; margin-bottom:15px;
+                   border-radius:6px; border:1px solid #ccc;">
 
-<button type="submit">Add Product</button>
+            <!-- QUANTITY -->
+            <label style="font-weight:bold;">Quantity</label><br>
+            <input type="number" name="quantity"
+                   value="{{ form.instance.quantity|default:'' }}"
+                   placeholder="Enter quantity"
+                   style="width:100%; padding:10px; margin-top:5px; margin-bottom:20px;
+                   border-radius:6px; border:1px solid #ccc;">
 
-</form>
+            <!-- BUTTONS -->
+            <div style="display:flex; justify-content:space-between;">
+
+                <a href="{% url 'product_list' %}">
+                    <button type="button" style="background:#95a5a6;">Cancel</button>
+                </a>
+
+                <button type="submit" style="background:#2ecc71;">
+                    {% if form.instance.pk %}
+                        Update Product
+                    {% else %}
+                        Add Product
+                    {% endif %}
+                </button>
+
+            </div>
+
+
+
+
+            <!-- CATEGORY -->
+            <label style="font-weight:bold;">Category</label><br>
+            <select name="category"
+                    style="width:100%; padding:10px; margin-top:5px; margin-bottom:20px;
+                    border-radius:6px; border:1px solid #ccc;">
+
+                <option value="">Select Category</option>
+
+                {% for cat in form.fields.category.queryset %}
+                    <option value="{{ cat.id }}"
+                        {% if form.instance.category and form.instance.category.id == cat.id %}
+                            selected
+                        {% endif %}
+                    >
+                        {{ cat.name }}
+                    </option>
+                {% endfor %}
+
+            </select>
+
+        </form>
+
+    </div>
+
+</div>
 
 {% endblock %}

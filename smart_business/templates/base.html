@@ -1,104 +1,183 @@
 <!DOCTYPE html>
 <html>
 <head>
-
 <title>Smart Business Management</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 
 <style>
 
 body{
-margin:0;
-font-family:Arial;
-background:#f4f6f9;
+    margin:0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background:#f4f6f9;
 }
 
+/* SIDEBAR */
 .sidebar{
-width:220px;
-height:100vh;
-background:linear-gradient(to bottom,red,pink);
-position:fixed;
-color:white;
+    width:230px;
+    height:100vh;
+    background: linear-gradient(180deg, #4facfe, #00c6ff);
+    position:fixed;
+    color:white;
+    display:flex;
+    flex-direction:column;
+}
+
+/* LOGO FONT */
+@font-face {
+    font-family: 'Billabong';
+    src: url('/static/fonts/Billabong.ttf') format('truetype');
 }
 
 .sidebar h2{
-text-align:center;
-padding:20px;
-border-bottom:1px solid #444;
+    text-align:center;
+    padding:20px 10px;
+    margin:0;
+    font-family: 'Billabong', cursive;
+    font-size: 40px;
+
+    background: linear-gradient(
+        45deg,
+        #feda75,
+        #fa7e1e,
+        #d62976,
+        #962fbf,
+        #4f5bd5
+    );
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
+/* MENU LINKS */
 .sidebar a{
-display:block;
-padding:15px;
-color:white;
-text-decoration:none;
+    padding:15px 20px;
+    color:white;
+    text-decoration:none;
+    font-size:15px;
+    transition:0.3s;
 }
 
 .sidebar a:hover{
-background:linear-gradient(to right,red,white);
+    background: rgba(255,255,255,0.2);
+    padding-left:25px;
 }
 
+/* MAIN */
 .main{
-margin-left:220px;
-padding:20px;
+    margin-left:230px;
+    padding:20px;
 }
 
+/* TOPBAR */
 .topbar{
-background:white;
-padding:15px;
-box-shadow:0 2px 5px rgba(0,0,0,0.1);
+    background:rgb(235, 13, 13);
+    padding:15px 20px;
+    border-radius:10px;
+    box-shadow:0 3px 10px rgba(0,0,0,0.1);
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
 }
 
-.content{
-margin-top:20px;
+.topbar h3{
+    margin:0;
+    color:#f1f0f0;
+    font-weight: bold;
 }
 
+.topbar span{
+    color:#f1f0f0;
+    font-size:14px;
+}
+/* CONTENT */
+    .content{
+        margin-top:20px;
+    }
+
+/* CARDS */
 .card-container{
-display:flex;
-gap:20px;
+    display:flex;
+    gap:20px;
+    flex-wrap:wrap;
 }
 
 .card{
-background:white;
-padding:30px;
-border-radius:10px;
-width:200px;
-box-shadow:0 2px 5px rgba(0,0,0,0.1);
-text-align:center;
+    background:white;
+    padding:25px;
+    border-radius:12px;
+    width:220px;
+    box-shadow:0 5px 15px rgba(0,0,0,0.1);
+    text-align:center;
+    transition:0.3s;
+}
+
+.card:hover{
+    transform: translateY(-5px);
 }
 
 .card h3{
-margin:0;
-color:#555;
+    margin:0;
+    color:#777;
 }
 
 .card h1{
-margin-top:10px;
-color:#3498db;
+    margin-top:10px;
+    color:#4facfe;
 }
 
+/* TABLE */
 table{
-width:100%;
-border-collapse:collapse;
-background:white;
+    width:100%;
+    border-collapse:collapse;
+    background:white;
+    border-radius:10px;
+    overflow:hidden;
+    box-shadow:0 3px 10px rgba(0,0,0,0.1);
+}
+
+table th{
+    background:#4facfe;
+    color:white;
 }
 
 table th, table td{
-padding:12px;
-border-bottom:1px solid #ddd;
-text-align:left;
+    padding:12px;
+    border-bottom:1px solid #eee;
+    text-align:left;
 }
 
+/* BUTTON */
 button{
-background:#3498db;
-color:white;
-border:none;
-padding:8px 15px;
-border-radius:5px;
-cursor:pointer;
+    background:#4facfe;
+    color:white;
+    border:none;
+    padding:8px 15px;
+    border-radius:6px;
+    cursor:pointer;
+    transition:0.3s;
 }
 
 button:hover{
-background:#2980b9;
+    background:#00c6ff;
+}
+
+.alert {
+    padding: 12px 20px;
+    border-radius: 6px;
+    margin-bottom: 15px;
+    color: white;
+    font-weight: 500;
+}
+.alert.success {
+    background: #2ecc71;
+}
+.alert.error {
+    background: #e74c3c;
+}
+.alert.warning {
+    background: #f39c12;
 }
 
 </style>
@@ -111,29 +190,46 @@ background:#2980b9;
 
 <h2>Inventra</h2>
 
-<a href="/dashboard/">Dashboard</a>
-<a href="/products/">Products</a>
-<a href="/customers/">Customers</a>
-<a href="/orders/">Orders</a>
-<a href="/auth/logout/">Logout</a>
+<a href="/dashboard/">🏠 Dashboard</a>
+<a href="/products/">📦 Products</a>
+<a href="/customers/">👥 Customers</a>
+<a href="/orders/">🧾 Orders</a>
+<a href="{% url 'logout' %}">🚪 Logout</a>
 
 </div>
 
 <div class="main">
 
 <div class="topbar">
-<h3>Business Management System</h3>
+<h3>Designed for modern business minds.</h3>
+<span>Welcome, {{ request.user.username }}</span>
 </div>
 
 <div class="content">
 
-{% block content %}
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert {{ message.tags }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
 
-{% endblock %}
+    {% block content %}
+    {% endblock %}
 
 </div>
 
 </div>
+
+<script>
+setTimeout(() => {
+    const alerts = document.querySelectorAll('.alert');
+    alerts.forEach(alert => {
+        alert.style.display = 'none';
+    });
+}, 3000); // disappears in 3 sec
+</script>
 
 </body>
 </html>
