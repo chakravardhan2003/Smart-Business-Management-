@@ -2,30 +2,243 @@
 
 {% block content %}
 
-<h2>Dashboard</h2>
+<div class="container">
 
-<div class="card-container">
+    <h2 class="title">📊 Dashboard</h2>
 
-<div class="card">
-<h3>Total Products</h3>
-<h1>{{ product_count }}</h1>
+    <!-- CARDS -->
+    <div class="cards">
+        <div class="card">
+            <h3>Total Orders</h3>
+            <p>{{ total_orders }}</p>
+        </div>
+
+        <div class="card">
+            <h3>Total Customers</h3>
+            <p>{{ total_customers }}</p>
+        </div>
+
+        <div class="card">
+            <h3>Total Products</h3>
+            <p>{{ total_products }}</p>
+        </div>
+
+        <div class="card highlight">
+            <h3>Total Revenue</h3>
+            <p>Rs. {{ total_revenue }}</p>
+        </div>
+    </div>
+
+    <!-- CHARTS -->
+    <div class="charts">
+        <div class="chart-box">
+            <h3>📈 Monthly Revenue</h3>
+            <canvas id="revenueChart"></canvas>
+        </div>
+
+        <div class="chart-box">
+            <h3>📊 Overview</h3>
+            <canvas id="ordersChart"></canvas>
+        </div>
+
+        <div class="chart-box">
+            <h3>🥧 Product Sales</h3>
+            <canvas id="productPieChart"></canvas>
+        </div>
+    </div>
+
+    <!-- RECENT ORDERS -->
+    <div class="section">
+        <h3>🧾 Recent Orders</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Customer</th>
+                    <th>Total</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in recent_orders %}
+                <tr>
+                    <td>#{{ order.id }}</td>
+                    <td>{{ order.customer.name }}</td>
+                    <td>Rs. {{ order.total_amount }}</td>
+                    <td>{{ order.created_at|date:"d M Y" }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4">No orders found</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- LOW STOCK -->
+    <div class="section">
+        <h3>⚠️ Low Stock Products</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for product in low_stock_products %}
+                <tr>
+                    <td>{{ product.name }}</td>
+                    <td class="low">{{ product.quantity }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="2">All products are in stock</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
 </div>
 
-<div class="card">
-<h3>Total Customers</h3>
-<h1>{{ customer_count }}</h1>
-</div>
+<!-- STYLES -->
+<style>
+.container {
+    max-width: 1100px;
+    margin: auto;
+}
 
-<div class="card">
-<h3>Total Orders</h3>
-<h1>{{ order_count }}</h1>
-</div>
+.title {
+    margin-bottom: 20px;
+}
 
-<div class="card">
-<h3>Total Sales</h3>
-<h1>₹ {{ total_sales }}</h1>
-</div>
+.cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+}
 
-</div>
+.card {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    transition: 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.card p {
+    font-size: 22px;
+    color: #3498db;
+    font-weight: bold;
+}
+
+.highlight {
+    background: #3498db;
+    color: white;
+}
+
+.highlight p {
+    color: white;
+}
+
+.charts {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-top: 40px;
+}
+
+.chart-box {
+    background: white;
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+}
+
+.section {
+    margin-top: 40px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+table th {
+    background: #3498db;
+    color: white;
+    padding: 10px;
+}
+
+table td {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.low {
+    color: red;
+    font-weight: bold;
+}
+</style>
+
+<!-- CHART JS (only once) -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+const months = {{ months|default:"[]"|safe }};
+const revenues = {{ revenues|default:"[]"|safe }};
+const productNames = {{ product_names|default:"[]"|safe }};
+const productTotals = {{ product_totals|default:"[]"|safe }};
+
+// Revenue Chart
+new Chart(document.getElementById('revenueChart'), {
+    type: 'line',
+    data: {
+        labels: months.length ? months : ["No Data"],
+        datasets: [{
+            label: 'Revenue',
+            data: revenues.length ? revenues : [0],
+            borderWidth: 2,
+            tension: 0.3
+        }]
+    }
+});
+
+// Overview Chart
+new Chart(document.getElementById('ordersChart'), {
+    type: 'bar',
+    data: {
+        labels: ['Orders', 'Customers', 'Products'],
+        datasets: [{
+            data: [
+                {{ total_orders|default:0 }},
+                {{ total_customers|default:0 }},
+                {{ total_products|default:0 }}
+            ]
+        }]
+    }
+});
+
+// Pie Chart
+new Chart(document.getElementById('productPieChart'), {
+    type: 'pie',
+    data: {
+        labels: productNames.length ? productNames : ["No Data"],
+        datasets: [{
+            data: productTotals.length ? productTotals : [1]
+        }]
+    }
+});
+</script>
 
 {% endblock %}

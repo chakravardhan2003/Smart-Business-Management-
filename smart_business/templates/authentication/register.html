@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Register</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            background: #2ecc71;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .box {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            width: 300px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background: #2ecc71;
+            color: white;
+            border: none;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="box">
+    <h2>Register</h2>
+
+    {% for message in messages %}
+        <p style="color:red;">{{ message }}</p>
+    {% endfor %}
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <input type="text" name="username" placeholder="Username" required>
+        <input type="email" name="email" placeholder="Email" required>
+        <input type="password" name="password1" placeholder="Password" required>
+        <input type="password" name="password2" placeholder="Confirm Password" required>
+
+        <button type="submit">Register</button>
+    </form>
+
+    <p style="text-align:center; margin-top:10px;">
+        Already have an account?
+        <a href="{% url 'login' %}">Login</a>
+    </p>
+</div>
+
+</body>
+</html>

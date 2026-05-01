@@ -9,4 +9,8 @@ urlpatterns = [
 
     path('delete/<int:id>/', views.delete_order, name='delete_order'),
 
+    path('invoice/<int:id>/', views.invoice_view, name='invoice'),
+
+    path('invoice/pdf/<int:id>/', views.invoice_pdf, name='invoice_pdf'),
+
 ]

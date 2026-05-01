@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Customer
-
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
 def customer_list(request):
 
@@ -23,6 +24,7 @@ def add_customer(request):
             phone=phone
         )
 
+        messages.success(request, "Customer added successfully!")
         return redirect('/customers/')
 
     return render(request, 'customers/add_customer.html')
